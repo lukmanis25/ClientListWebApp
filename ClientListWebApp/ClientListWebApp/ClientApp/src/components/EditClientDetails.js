@@ -33,7 +33,6 @@ const EditClientDetails = () => {
     async function updateClient(e) {
         e.preventDefault();
         let clientInfo = {
-            "id": id,
             "name": name ? name : clientDetails.name,
             "surname": surname ? surname : clientDetails.surname,
             "email": "",

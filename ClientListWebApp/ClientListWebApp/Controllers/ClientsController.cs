@@ -1,4 +1,5 @@
 ﻿using ClientListWebApp.Models;
+using ClientListWebApp.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Xml.Linq;
@@ -9,11 +10,21 @@ namespace ClientListWebApp.Controllers
     [Route("[controller]")]
     public class ClientsController : ControllerBase
     {
+       
+
+
         private static IList<Client> Clients = new[]
         {
             new Client{Id = 1, Name = "Łukasz", Surname = "Smolinski"},
             new Client{Id = 2, Name = "Jan", Surname = "Kowalski"}
         };
+
+        private readonly IClientService _clientService;
+        public ClientsController(IClientService clientService)
+        {
+             _clientService = clientService;
+        }
+
 
         [HttpGet]
         public IList<Client> Get()
@@ -35,6 +46,9 @@ namespace ClientListWebApp.Controllers
         {
             if (client == null) return false;
             //Clients.Append(client);
+
+            int i = _clientService.Save(client);
+
             return true;
         }
 

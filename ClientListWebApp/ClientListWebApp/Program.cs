@@ -1,8 +1,20 @@
+using ClientListWebApp;
+using ClientListWebApp.Services;
+using ClientListWebApp.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IClientService, ClientService>();
+
+builder.Services.AddDbContext<DbAppContext>(builder =>
+{
+    builder.UseSqlServer("Data Source=LUKAS;Initial Catalog=DbTestClients;Integrated Security=True;TrustServerCertificate=True");
+});
 
 var app = builder.Build();
 

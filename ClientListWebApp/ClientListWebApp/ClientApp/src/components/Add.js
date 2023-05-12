@@ -25,7 +25,6 @@ const Add = () => {
     async function PostClient(e) {
         e.preventDefault();
         let clientInfo = {
-            "id": id,
             "name": name,
             "surname": surname,
             "email": "",
