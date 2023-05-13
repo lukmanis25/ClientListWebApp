@@ -47,8 +47,13 @@ namespace ClientListWebApp.Services
 
         public int Save(Client client)
         {
-            //save to db
+            //Check if email doesnt already exist
             if (!IsEmailAvailble(client.Email))
+            {
+                return -1;
+            }
+            //chcek if category exist
+            if (!(_appContext.Categories.Any(m => m.Id == client.CategoryId)))
             {
                 return -1;
             }
@@ -66,7 +71,7 @@ namespace ClientListWebApp.Services
             }
             else
             {
-
+                //Check if there is someone with new email
                 if ((_appContext.Clients.Any(m => ( m.Email == client.Email && m.Id != id))))
                 {
                     return -1;
@@ -79,7 +84,7 @@ namespace ClientListWebApp.Services
                 entity.Category = client.Category;
                 entity.Subcategory = client.Subcategory;
                 entity.DateOfBirth =  client.DateOfBirth;
-                //Check if there is someone with new email
+                entity.CategoryId = client.CategoryId;
                 
                 _appContext.SaveChanges();
                 return 0;

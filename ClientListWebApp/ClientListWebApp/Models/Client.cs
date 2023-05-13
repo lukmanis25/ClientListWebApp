@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClientListWebApp.Models
 {
@@ -27,8 +28,6 @@ namespace ClientListWebApp.Models
         //Minimum one big letter, one small letter, one digit and minimum 6 chars
         public string Password { get; set; }
 
-        [Required]
-        public string Category { get; set; }
 
         [Required]
         public string Subcategory { get; set; }
@@ -41,6 +40,12 @@ namespace ClientListWebApp.Models
         [Required]
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
+
+        //[Required]
+        //[ForeignKey("Categories")]
+        public int CategoryId { get; set; }
+        public virtual Category? Category { get; set; } = null!;
+
 
     }
 }

@@ -13,12 +13,22 @@ const EditClientDetails = () => {
     const [phone, setPhone] = useState("")
     const [date, setDate] = useState("")
     const [password, setPassword] = useState("")
-    const [category, setCategory] = useState("")
     const [subcategory, setSubcategory] = useState("")
+    const [categoryId, setCategoryId] = useState(1)
 
     const [message, setMessage] = useState(null)
 
+    const [categories, setCategories] = useState([])
 
+    //Get all cattegories
+    const getCategoriesAPI = async () => {
+        let response = await fetch("category");
+        let jsonData = await response.json();
+        setCategories(jsonData);
+        console.log(jsonData)
+        setCategoryId(jsonData[0]['id'])
+        setIsLoading(false)
+    }
 
 
     //get client API
@@ -26,6 +36,7 @@ const EditClientDetails = () => {
         const response = await fetch("clients/" + id);
         const jsonData = await response.json();
         await setClientDetails(jsonData)
+        await getCategoriesAPI() // get categories
         setIsLoading(false);
     }
 
@@ -44,10 +55,10 @@ const EditClientDetails = () => {
             "surname": surname ? surname : clientDetails.surname,
             "email": email ? email : clientDetails.email,
             "password": password ? password : clientDetails.password,
-            "category": category ? category : clientDetails.category,
             "subcategory": subcategory ? subcategory : clientDetails.subcategory,
             "phone": phone ? subcategory : clientDetails.phone,
             "dateOfBirth": date ? date : clientDetails.dateOfBirth,
+            "categoryId": categoryId
         };
         const response = await fetch("clients/" + id, {
             method: "PUT",
@@ -92,6 +103,18 @@ const EditClientDetails = () => {
                     <div className="form-group">
                         <label htmlFor="date_input">Date Of Birth</label>
                         <input type="date" className="form-control" id="date_input" placeholder="date" onChange={(e) => setDate(e.target.value)} defaultValue={clientDetails?.dateOfBirth} />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="category_input">Select category:</label>
+                        <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)} className="form-control" id="category_input">
+                            {categories.map(option => (
+                                <option key={option.id} value={option.id}>
+                                    {option.name}
+                                </option>
+                            ))}
+
+
+                        </select>
                     </div>
 
                     <button type="submit" className="btn btn-primary">Submit changes</button>

@@ -10,10 +10,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IClientService, ClientService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 builder.Services.AddDbContext<DbAppContext>(builder =>
 {
-    builder.UseSqlServer("Data Source=LUKAS;Initial Catalog=DbClients7;Integrated Security=True;TrustServerCertificate=True");
+
+    builder.UseSqlServer("Data Source=LUKAS;Initial Catalog=DbClients11;Integrated Security=True;TrustServerCertificate=True");
 });
 
 var app = builder.Build();
