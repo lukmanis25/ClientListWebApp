@@ -9,6 +9,12 @@ const EditClientDetails = () => {
 
     const [name, setName] = useState("")
     const [surname, setSurname] = useState("")
+    const [email, setEmail] = useState("")
+    const [phone, setPhone] = useState("")
+    const [date, setDate] = useState("")
+    const [password, setPassword] = useState("")
+    const [category, setCategory] = useState("")
+    const [subcategory, setSubcategory] = useState("")
 
     const [message, setMessage] = useState(null)
 
@@ -32,17 +38,17 @@ const EditClientDetails = () => {
     //PUT API
     async function updateClient(e) {
         e.preventDefault();
+        setMessage("Loading...")
         let clientInfo = {
             "name": name ? name : clientDetails.name,
             "surname": surname ? surname : clientDetails.surname,
-            "email": "",
-            "password": "",
-            "category": "",
-            "subcategory": "",
-            "phone": 1,
-            "dateOfBirth": "2001",
+            "email": email ? email : clientDetails.email,
+            "password": password ? password : clientDetails.password,
+            "category": category ? category : clientDetails.category,
+            "subcategory": subcategory ? subcategory : clientDetails.subcategory,
+            "phone": phone ? subcategory : clientDetails.phone,
+            "dateOfBirth": date ? date : clientDetails.dateOfBirth,
         };
-        console.log(clientInfo)
         const response = await fetch("clients/" + id, {
             method: "PUT",
             headers: {
@@ -71,7 +77,22 @@ const EditClientDetails = () => {
                         <label htmlFor="surname_input">Surname</label>
                         <input type="text" className="form-control" id="surname_input" placeholder="surname" onChange={(e) => setSurname(e.target.value)} defaultValue={clientDetails?.surname} />
                     </div>
-
+                    <div className="form-group">
+                        <label htmlFor="email_input">Email</label>
+                        <input type="email" className="form-control" id="email_input" placeholder="email" onChange={(e) => setEmail(e.target.value)} defaultValue={clientDetails?.email} />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="password_input">Password</label>
+                        <input type="password" className="form-control" id="password_input" placeholder="password" onChange={(e) => setPassword(e.target.value)} defaultValue={clientDetails?.password} />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="phone_input">Phone</label>
+                        <input type="phone" className="form-control" id="phone_input" placeholder="phone" onChange={(e) => setPhone(e.target.value)} defaultValue={clientDetails?.phone} />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="date_input">Date Of Birth</label>
+                        <input type="date" className="form-control" id="date_input" placeholder="date" onChange={(e) => setDate(e.target.value)} defaultValue={clientDetails?.dateOfBirth} />
+                    </div>
 
                     <button type="submit" className="btn btn-primary">Submit changes</button>
                 </form>

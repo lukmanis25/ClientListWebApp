@@ -6,32 +6,30 @@ function Clients() {
     const [isLoading, setIsLoading] = useState(false);
     const [clientsList, setClientsList] = useState([]);
 
-
+    const getClientsAPI = async () => {
+        let response = await fetch("clients");
+        let jsonData = await response.json();
+        setClientsList(jsonData);
+        setIsLoading(false)
+    }
     //Load clients from server on load
     useEffect(() => {
         setIsLoading(true);
-        const getClientsAPI = async () => {
-            let response = await fetch("clients");
-            let jsonData = await response.json();
-            setClientsList(jsonData);
-            setIsLoading(false)
-        }
         getClientsAPI();
     }, [])
 
     //delete API
     async function deleteClient(id) {
+        setIsLoading(true);
         const response = await fetch("clients/"+id, {
             method: "DELETE",
         });
         const jsonData = await response.json()
 
-        if (jsonData === true) {
-            console.log("dziala")
+        if (jsonData !== true) {
+            console.log("cos poszlo nie tak")
         }
-        else {
-            console.log("nie dziala")
-        }
+        getClientsAPI();
     }
 
     return (

@@ -13,7 +13,7 @@ builder.Services.AddScoped<IClientService, ClientService>();
 
 builder.Services.AddDbContext<DbAppContext>(builder =>
 {
-    builder.UseSqlServer("Data Source=LUKAS;Initial Catalog=DbTestClients;Integrated Security=True;TrustServerCertificate=True");
+    builder.UseSqlServer("Data Source=LUKAS;Initial Catalog=DbClients7;Integrated Security=True;TrustServerCertificate=True");
 });
 
 var app = builder.Build();

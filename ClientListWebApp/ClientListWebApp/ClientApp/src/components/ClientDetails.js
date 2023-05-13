@@ -32,7 +32,7 @@ const ClientDetails = () => {
                     <div>Category: {clientDetails.category}</div>
                     <div>SubCategory: {clientDetails.subcategory}</div>
                     <div>Phone: {clientDetails.phone}</div>
-                    <div>Date: {clientDetails.dateofbirth}</div>
+                    <div>Date: {clientDetails.dateOfBirth}</div>
                     <Link to={"/" + id + "/edit"} >
                         <button type="button" className="btn btn-primary"> Edit </button>
                     </Link>

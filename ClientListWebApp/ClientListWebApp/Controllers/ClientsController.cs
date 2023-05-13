@@ -12,13 +12,6 @@ namespace ClientListWebApp.Controllers
     {
        
 
-
-        private static IList<Client> Clients = new[]
-        {
-            new Client{Id = 1, Name = "Łukasz", Surname = "Smolinski"},
-            new Client{Id = 2, Name = "Jan", Surname = "Kowalski"}
-        };
-
         private readonly IClientService _clientService;
         public ClientsController(IClientService clientService)
         {
@@ -27,60 +20,40 @@ namespace ClientListWebApp.Controllers
 
 
         [HttpGet]
-        public IList<Client> Get()
+        public IEnumerable<Client> Get()
         {
-
-            return Clients;
+            var clients = _clientService.GetAllClients();
+            return clients;
         }
 
         [HttpGet]
         [Route("{id}")]
         public Client Get(int id)
-        {
-            //oblsuga braku takiego uzytkownika
-            return Clients.Where(c => c.Id == id ).First();
+        {   
+            var client = _clientService.GetClient(id);
+            return client;
         }
 
         [HttpPost]
         public bool PostClient(Client client)
         {
             if (client == null) return false;
-            //Clients.Append(client);
-
-            int i = _clientService.Save(client);
-
-            return true;
+            int code = _clientService.Save(client);
+            return code == 0; //change return bool to normal response !!
         }
 
         [HttpDelete("{id}")]
         public bool DeleteClient(int id) 
         {
-            
-            foreach (var c in Clients)
-            {
-                if(c.Id == id)
-                {
-                    //Clients.Remove(c);
-                    return true;
-                }
-            }
-            return false;
+            int code = _clientService.DeleteClient(id);
+            return code == 0;
         }
 
         [HttpPut("{id}")]
         public bool PutClient(int id, Client client) 
         {
-
-            foreach (var c in Clients)
-            {
-                if (c.Id == id)
-                {
-                    //Clients.Remove(c);
-                    //Clients.Append(client);
-                    return true;
-                }
-            }
-            return false;
+            int code = _clientService.UpdateClient(id, client);
+            return code == 0;
         }
     }
 }

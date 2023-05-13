@@ -1,5 +1,10 @@
-﻿using ClientListWebApp.Models;
+﻿using Azure;
+using Azure.Core;
+using ClientListWebApp.Models;
 using ClientListWebApp.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 namespace ClientListWebApp.Services
 {
@@ -11,12 +16,80 @@ namespace ClientListWebApp.Services
         {
             _appContext = context;
         }
+
+        public int DeleteClient(int id)
+        {
+
+            var client = _appContext.Clients.FirstOrDefault(e => e.Id == id);
+            if (client == null)
+            {
+                return -1;
+            }
+            else
+            {
+                _appContext.Clients.Remove(client);
+                _appContext.SaveChanges();
+                return 0;
+            }
+        }
+
+        public IEnumerable<Client> GetAllClients()
+        {
+            var clients = _appContext.Clients.ToList();
+            return clients;
+        }
+
+        public Client GetClient(int id)
+        {
+            var client = _appContext.Clients.Find(id);
+            return client;
+        }
+
         public int Save(Client client)
         {
             //save to db
+            if (!IsEmailAvailble(client.Email))
+            {
+                return -1;
+            }
             _appContext.Clients.Add(client);
             _appContext.SaveChanges();
-            return client.Id;
+            return 0;
+        }
+
+        public int UpdateClient(int id, Client client)
+        {
+            var entity = _appContext.Clients.FirstOrDefault(e => e.Id == id);
+            if (entity == null)
+            {
+                return -1;
+            }
+            else
+            {
+
+                if ((_appContext.Clients.Any(m => ( m.Email == client.Email && m.Id != id))))
+                {
+                    return -1;
+                }
+
+                entity.Name = client.Name;
+                entity.Surname = client.Surname;
+                entity.Email = client.Email;
+                entity.Phone = client.Phone;
+                entity.Category = client.Category;
+                entity.Subcategory = client.Subcategory;
+                entity.DateOfBirth =  client.DateOfBirth;
+                //Check if there is someone with new email
+                
+                _appContext.SaveChanges();
+                return 0;
+            }
+        }
+        public bool IsEmailAvailble(string email)
+        {
+            var ans = !(_appContext.Clients.Any(m => m.Email == email));
+            return ans;
+
         }
     }
 }
