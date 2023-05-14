@@ -1,5 +1,6 @@
 ﻿using ClientListWebApp.Models;
 using ClientListWebApp.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Xml.Linq;
@@ -26,8 +27,10 @@ namespace ClientListWebApp.Controllers
             return clients;
         }
 
+        
         [HttpGet]
         [Route("{id}")]
+        [Authorize]
         public Client Get(int id)
         {   
             var client = _clientService.GetClient(id);

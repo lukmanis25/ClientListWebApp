@@ -1,10 +1,10 @@
 ﻿using ClientListWebApp.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
-
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 namespace ClientListWebApp
 {
-    public class DbAppContext : DbContext
+    public class DbAppContext : IdentityDbContext<User>
     {
         public DbAppContext(DbContextOptions<DbAppContext> options) : base(options)
         {
@@ -17,12 +17,13 @@ namespace ClientListWebApp
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //modelBuilder.Entity<Client>().HasKey(t => t.CategoryId);
-            //base.OnModelCreating(modelBuilder);
+            
             modelBuilder.Entity<Client>()
                 .HasOne(e => e.Category)
                 .WithMany()
                 .HasForeignKey(e => e.CategoryId)
                 .IsRequired();
+            base.OnModelCreating(modelBuilder);
         }
 
     }
