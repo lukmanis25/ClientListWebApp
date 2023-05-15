@@ -24,8 +24,11 @@ function Clients() {
         const response = await fetch("clients/"+id, {
             method: "DELETE",
         });
+        if (!response.ok) {
+            setIsLoading(false)
+           return 
+        }
         const jsonData = await response.json()
-
         if (jsonData !== true) {
             console.log("cos poszlo nie tak")
         }
@@ -40,7 +43,7 @@ function Clients() {
                         {
                             clientsList.map((c) => 
      
-                                <li className="list-group-item d-flex justify-content-between">
+                                <li key={c.id} className="list-group-item d-flex justify-content-between" >
                                     <p>Client {c.id}: {c.name} {c.surname}</p>
                                     <div>
                                         <Link to={"/" + c.id} >

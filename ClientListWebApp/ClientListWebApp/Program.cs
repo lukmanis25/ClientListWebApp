@@ -35,6 +35,7 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
 
 }).AddEntityFrameworkStores<DbAppContext>();
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -16,7 +16,7 @@ const RegisterForm = () => {
             "password": password
         };
         console.log(clientInfo)
-        const response = await fetch("account", {
+        const response = await fetch("account/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -36,17 +36,25 @@ const RegisterForm = () => {
     return (
         <main>
             <h2>Regoster Form</h2>
-            <form>
-                <div class="form-group">
-                    <label for="inputLogin">Login</label>
-                    <input type="text" class="form-control" id="inputLogin" placeholder="Login"></input>
+            <form onSubmit={(e) => postRegister(e)}>
+                <div className="form-group">
+                    <label htmlFor="inputLogin">Login</label>
+                    <input type="text" className="form-control" id="inputLogin" placeholder="Login" onChange={(e) => setLogin(e.target.value)}></input>
                 </div>
-                <div class="form-group">
-                    <label for="inputPassword">Password</label>
-                    <input type="password" class="form-control" id="inputPassword" placeholder="Password"></input>
+                <div className="form-group">
+                    <label htmlFor="inputPassword">Password</label>
+                    <input type="password" className="form-control" id="inputPassword" placeholder="Password" onChange={(e) => setPassword(e.target.value)}></input>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" className="btn btn-primary">Submit</button>
             </form>
+            {
+                message ?
+                    (
+                        <div className="alert alert-primary" role="alert">
+                            {message}
+                        </div>) :
+                    (<></>)
+            }
         </main>
     )
 

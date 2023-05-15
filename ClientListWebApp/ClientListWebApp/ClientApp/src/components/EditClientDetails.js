@@ -67,6 +67,10 @@ const EditClientDetails = () => {
             },
             body: JSON.stringify(clientInfo),
         });
+        if (!response.ok) {
+            setMessage("Permission denied")
+            return
+        }
         const jsonData = await response.json()
 
         if (jsonData === true) {

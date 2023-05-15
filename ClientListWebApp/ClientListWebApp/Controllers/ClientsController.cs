@@ -21,42 +21,45 @@ namespace ClientListWebApp.Controllers
 
 
         [HttpGet]
-        public IEnumerable<Client> Get()
+        public IActionResult Get()
         {
             var clients = _clientService.GetAllClients();
-            return clients;
+            return Ok(clients);
         }
 
         
         [HttpGet]
         [Route("{id}")]
-        [Authorize]
-        public Client Get(int id)
+        public IActionResult Get(int id)
         {   
             var client = _clientService.GetClient(id);
-            return client;
+            return Ok(client);
         }
 
         [HttpPost]
-        public bool PostClient(Client client)
+        [Authorize]
+        public IActionResult PostClient(Client client)
         {
-            if (client == null) return false;
+            if (client == null) return BadRequest(false);
             int code = _clientService.Save(client);
-            return code == 0; //change return bool to normal response !!
+            return code == 0 ? Ok(true) : BadRequest(false);
         }
 
         [HttpDelete("{id}")]
-        public bool DeleteClient(int id) 
+        [Authorize]
+        public IActionResult DeleteClient(int id) 
         {
+
             int code = _clientService.DeleteClient(id);
-            return code == 0;
+            return code == 0 ? Ok(true) : BadRequest(false);
         }
 
         [HttpPut("{id}")]
-        public bool PutClient(int id, Client client) 
+        [Authorize]
+        public IActionResult PutClient(int id, Client client) 
         {
             int code = _clientService.UpdateClient(id, client);
-            return code == 0;
+            return code == 0 ? Ok(true) : BadRequest(false);
         }
     }
 }

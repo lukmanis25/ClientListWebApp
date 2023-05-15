@@ -38,7 +38,6 @@ const ClientDetails = () => {
             
             {clientDetails != null ?
                 (<>
-                    {console.log(clientDetails) }
                     <h2>{clientDetails.name} {clientDetails.surname} {clientDetails.id}</h2>
                     <div>Email: {clientDetails.email}</div>
                     <div>Category: {categoryName}</div>

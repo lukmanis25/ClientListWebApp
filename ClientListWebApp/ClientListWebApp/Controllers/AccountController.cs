@@ -21,11 +21,11 @@ namespace ClientListWebApp.Controllers
 
         [HttpPost]
         [Route("register")]
-        public async Task<bool> Register(RegisterData registerData)
+        public async Task<IActionResult> Register(RegisterData registerData)
         {
             if (!ModelState.IsValid)
             {
-                return false;
+                return BadRequest(false);
             }
 
             var result = await _userManager.CreateAsync(new User
@@ -33,32 +33,32 @@ namespace ClientListWebApp.Controllers
                 UserName = registerData.Login,
             }, registerData.Password); //hashed password
 
-
-            return true;
+            if(!result.Succeeded) { return BadRequest(false); }
+            return Ok(true);
         }
 
         [HttpPost]
         [Route("login")]
-        public async Task<bool> Login(LoginData loginData)
+        public async Task<IActionResult> Login(LoginData loginData)
         {
             if (!ModelState.IsValid)
             {
-                return false;
+                return BadRequest(false);
             }
 
             var result = await _signInManager.PasswordSignInAsync(loginData.Login, loginData.Password, false, false);
 
 
-
-            return true;
+            if (!result.Succeeded) { return BadRequest(false); }
+            return Ok(true);
         }
 
         [HttpPost]
         [Route("logout")]
-        public async Task<bool> LogOut()
+        public async Task<IActionResult> LogOut()
         {
             var res = _signInManager.SignOutAsync();
-            return true;
+            return Ok(true);
         }
 
 

@@ -16,18 +16,18 @@ namespace ClientListWebApp.Controllers
 
 
         [HttpGet]
-        public IEnumerable<Category> Get()
+        public IActionResult Get()
         {
             var categories = _categoryService.GetAllCategory();
-            return categories;
+            return Ok(categories);
         }
 
         [HttpGet]
         [Route("{id}")]
-        public Category Get(int id)
+        public IActionResult Get(int id)
         {
             var category = _categoryService.GetCategory(id);
-            return category;
+            return Ok(category);
         }
     }
 }

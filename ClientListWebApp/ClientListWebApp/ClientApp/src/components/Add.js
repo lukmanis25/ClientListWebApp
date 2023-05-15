@@ -45,7 +45,6 @@ const Add = () => {
             "dateOfBirth": date,
             "categoryId": categoryId
         };
-        console.log(clientInfo)
         const response = await fetch("clients", {
             method: "POST",
             headers: {
@@ -53,8 +52,13 @@ const Add = () => {
             },
             body: JSON.stringify(clientInfo),
         });
-        const jsonData = await response.json()
+        console.log(response)
+        if (response.redirected) {
+            setMessage("Permission denied")
+            return
+        }
 
+        const jsonData = await response.json()
         if (jsonData === true) {
             setMessage("New client succesful added")
         }
