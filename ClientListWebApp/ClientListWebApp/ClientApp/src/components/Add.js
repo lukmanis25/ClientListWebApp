@@ -9,6 +9,7 @@ const Add = () => {
     const [date, setDate] = useState("")
     const [password, setPassword] = useState("")
     const [categoryId, setCategoryId] = useState(1)
+    const [subcategory, setSubcategory] = useState("niezdefiniowane")
 
     const [categories, setCategories] = useState([])
 
@@ -21,8 +22,8 @@ const Add = () => {
         let response = await fetch("category");
         let jsonData = await response.json();
         setCategories(jsonData);
-        console.log(jsonData)
         setCategoryId(jsonData[0]['id'])
+        
         setIsLoading(false)
     }
 
@@ -40,11 +41,12 @@ const Add = () => {
             "surname": surname,
             "email": email,
             "password": password,
-            "subcategory": "jakas",
+            "subcategory": subcategory,
             "phone": phone,
             "dateOfBirth": date,
             "categoryId": categoryId
         };
+      
         const response = await fetch("clients", {
             method: "POST",
             headers: {
@@ -52,7 +54,7 @@ const Add = () => {
             },
             body: JSON.stringify(clientInfo),
         });
-        console.log(response)
+
         if (response.redirected) {
             setMessage("Permission denied")
             return
@@ -63,10 +65,16 @@ const Add = () => {
             setMessage("New client succesful added")
         }
         else {
-            setMessage("Something went wrong")
+            setMessage("Bad input")
         }
     }
+
+    function changeCategory(e) {
+        setCategoryId(e.target.value)
+        setSubcategory("niezdefiniowane")
+    }
     return (
+        
         <main>
             {(!isLoading) ? (<>
                 <form onSubmit={(e) => PostClient(e)}>
@@ -86,6 +94,7 @@ const Add = () => {
                     <div className="form-group">
                         <label htmlFor="password_input">Password</label>
                         <input type="password" className="form-control" id="password_input" placeholder="password" onChange={(e) => setPassword(e.target.value)} />
+                        <small id="passwordHelp" className="form-text text-muted">Min 6 char, 1 digit, 1 big letter</small>
                     </div>
                     <div className="form-group">
                         <label htmlFor="phone_input">Phone</label>
@@ -97,16 +106,37 @@ const Add = () => {
                     </div>
                     <div className="form-group">
                         <label htmlFor="category_input">Select category:</label>
-                        <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)} className="form-control" id="category_input">
+                        <select value={categoryId} onChange={(e) => changeCategory(e)} className="form-control" id="category_input">
                             {categories.map(option => (
                                 <option key={option.id} value={option.id}>
                                     {option.name}
                                 </option>
-                            ))}
-
-                            
+                            ))}    
                         </select>
                     </div>
+                    
+                    {(categories[categoryId - 1]?.sluzbowySubcategories.length > 0 ) &&
+                        <div className="form-group">
+                            <label htmlFor="subcategory_input">Select subcategory:</label>
+                            <select value={subcategory} onChange={(e) => setSubcategory(e.target.value)} className="form-control" id="subcategory_input">
+                                <option key={"niezdefiniowane"} value={"niezdefiniowane"}>
+                                    {"niezdefiniowane"}
+                                </option>
+                                {categories[categoryId - 1].sluzbowySubcategories.map(option => (
+                                    <option key={option.name} value={option.name}>
+                                        {option.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    }
+                    {
+                        (categories[categoryId - 1]?.isOther) &&
+                        <div className="form-group">
+                                <label htmlFor="subcategory_input">Subcategory</label>
+                                <input type="text" className="form-control" id="subcategory_input" placeholder="subcategory" onChange={(e) => setSubcategory(e.target.value)} />
+                        </div>
+                    }
 
 
                     <button type="submit" className="btn btn-primary">Submit</button>

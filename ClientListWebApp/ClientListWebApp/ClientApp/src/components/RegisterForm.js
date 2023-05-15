@@ -15,7 +15,6 @@ const RegisterForm = () => {
             "login": login,
             "password": password
         };
-        console.log(clientInfo)
         const response = await fetch("account/register", {
             method: "POST",
             headers: {
@@ -44,6 +43,7 @@ const RegisterForm = () => {
                 <div className="form-group">
                     <label htmlFor="inputPassword">Password</label>
                     <input type="password" className="form-control" id="inputPassword" placeholder="Password" onChange={(e) => setPassword(e.target.value)}></input>
+                    <small id="passwordHelp" className="form-text text-muted">Min 6 char, 1 digit, 1 big letter</small>
                 </div>
                 <button type="submit" className="btn btn-primary">Submit</button>
             </form>

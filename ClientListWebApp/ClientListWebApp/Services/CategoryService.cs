@@ -19,12 +19,16 @@ namespace ClientListWebApp.Services
         public IEnumerable<Category> GetAllCategory()
         {
             var categories = _appContext.Categories.ToList();
+
+            var sluzbowySubcategories = _appContext.SluzbowySubcategories.ToList(); //auto add to categories
+
             return categories;
         }
 
         public Category GetCategory(int id)
         {
             var category = _appContext.Categories.Find(id);
+            var sluzbowySubcategories = _appContext.SluzbowySubcategories.ToList(); //auto add to categories
             return category;
         }
         public bool IsCategoryExist(int id)

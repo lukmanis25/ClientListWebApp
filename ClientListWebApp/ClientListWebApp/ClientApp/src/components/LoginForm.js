@@ -16,7 +16,6 @@ const LoginForm = () => {
             "login": login,
             "password": password
         };
-        console.log(clientInfo)
         const response = await fetch("account/login", {
             method: "POST",
             headers: {

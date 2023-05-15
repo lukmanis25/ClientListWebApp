@@ -20,7 +20,7 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddDbContext<DbAppContext>(builder =>
 {
 
-    builder.UseSqlServer("Data Source=LUKAS;Initial Catalog=DbClients12;Integrated Security=True;TrustServerCertificate=True");
+    builder.UseSqlServer("Data Source=LUKAS;Initial Catalog=DbClients15;Integrated Security=True;TrustServerCertificate=True");
 });
 
 //Identity

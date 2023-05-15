@@ -30,6 +30,9 @@ namespace ClientListWebApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool?>("IsOther")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -82,6 +85,28 @@ namespace ClientListWebApp.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Clients");
+                });
+
+            modelBuilder.Entity("ClientListWebApp.Models.SluzbowySubcategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("SluzbowySubcategories");
                 });
 
             modelBuilder.Entity("ClientListWebApp.Models.User", b =>
@@ -293,6 +318,15 @@ namespace ClientListWebApp.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("ClientListWebApp.Models.SluzbowySubcategory", b =>
+                {
+                    b.HasOne("ClientListWebApp.Models.Category", null)
+                        .WithMany("SluzbowySubcategories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -342,6 +376,11 @@ namespace ClientListWebApp.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ClientListWebApp.Models.Category", b =>
+                {
+                    b.Navigation("SluzbowySubcategories");
                 });
 #pragma warning restore 612, 618
         }

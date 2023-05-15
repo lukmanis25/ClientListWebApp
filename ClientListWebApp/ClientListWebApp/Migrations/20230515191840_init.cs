@@ -56,7 +56,8 @@ namespace ClientListWebApp.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsOther = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -195,6 +196,26 @@ namespace ClientListWebApp.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "SluzbowySubcategories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SluzbowySubcategories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SluzbowySubcategories_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -238,6 +259,11 @@ namespace ClientListWebApp.Migrations
                 name: "IX_Clients_CategoryId",
                 table: "Clients",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SluzbowySubcategories_CategoryId",
+                table: "SluzbowySubcategories",
+                column: "CategoryId");
         }
 
         /// <inheritdoc />
@@ -260,6 +286,9 @@ namespace ClientListWebApp.Migrations
 
             migrationBuilder.DropTable(
                 name: "Clients");
+
+            migrationBuilder.DropTable(
+                name: "SluzbowySubcategories");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
