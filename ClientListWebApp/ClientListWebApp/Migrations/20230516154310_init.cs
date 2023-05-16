@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace ClientListWebApp.Migrations
 {
     /// <inheritdoc />
@@ -214,6 +216,25 @@ namespace ClientListWebApp.Migrations
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "Id", "IsOther", "Name" },
+                values: new object[,]
+                {
+                    { 1, false, "służbowy" },
+                    { 2, false, "prywatny" },
+                    { 3, true, "inny" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "SluzbowySubcategories",
+                columns: new[] { "Id", "CategoryId", "Name" },
+                values: new object[,]
+                {
+                    { 1, 1, "klient" },
+                    { 2, 1, "szef" }
                 });
 
             migrationBuilder.CreateIndex(

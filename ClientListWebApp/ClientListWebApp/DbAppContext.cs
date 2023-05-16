@@ -20,6 +20,17 @@ namespace ClientListWebApp
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //Initial Data
+            var cat1 = new Category { Id = 1, Name = "służbowy" };
+            var cat2 = new Category { Id = 2, Name = "prywatny" };
+            var cat3 = new Category { Id = 3, Name = "inny", IsOther = true };
+
+            var subcat1 = new SluzbowySubcategory { Id = 1, Name = "klient", CategoryId = 1 };
+            var subcat2 = new SluzbowySubcategory { Id = 2, Name = "szef", CategoryId = 1 };
+
+            modelBuilder.Entity<Category>().HasData(cat1, cat2, cat3);
+            modelBuilder.Entity<SluzbowySubcategory>().HasData(subcat1, subcat2);
+
             //Relations
             modelBuilder.Entity<Client>()
                 .HasOne(e => e.Category)

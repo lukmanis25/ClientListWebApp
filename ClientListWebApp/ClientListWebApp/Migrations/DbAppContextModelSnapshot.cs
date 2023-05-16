@@ -40,6 +40,26 @@ namespace ClientListWebApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IsOther = false,
+                            Name = "służbowy"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IsOther = false,
+                            Name = "prywatny"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            IsOther = true,
+                            Name = "inny"
+                        });
                 });
 
             modelBuilder.Entity("ClientListWebApp.Models.Client", b =>
@@ -107,6 +127,20 @@ namespace ClientListWebApp.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("SluzbowySubcategories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryId = 1,
+                            Name = "klient"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoryId = 1,
+                            Name = "szef"
+                        });
                 });
 
             modelBuilder.Entity("ClientListWebApp.Models.User", b =>
